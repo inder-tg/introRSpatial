@@ -1,6 +1,6 @@
 # introRSpatial
 
-Introducción al análisis espacial con R está ideado para entusiasta de R y SIG.
+Introducción al análisis espacial con R está ideado para entusiastas de R y SIG.
 
 Con el siguiente temario abrimos operaciones en este proyecto esperando proveer de herramientas
 básicas para que los participantes del taller comiencen su andar por el camino del análisis espacial con R.
@@ -31,4 +31,4 @@ gapfill, geoTS, etc.
 
 ## Septiembre 6, 2023
 - Creación de este repositorio
-- Esta primera versión del taller se ofrece en las instalaciones de [El Colegio de Michoacán](https://www.colmich.edu.mx/) campus La Piedad. La organización de este taller corrió a cargo de Néstor Corona.
+- Esta primera versión del taller se ofrece en las instalaciones de [El Colegio de Michoacán](https://www.colmich.edu.mx/) campus La Piedad. La organización local de este taller corrió a cargo de Néstor Corona.
