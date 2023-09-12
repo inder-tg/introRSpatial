@@ -32,3 +32,9 @@ gapfill, geoTS, etc.
 ## Septiembre 6, 2023
 - Creación de este repositorio
 - Esta primera versión del taller se ofrece en las instalaciones de [El Colegio de Michoacán](https://www.colmich.edu.mx/) campus La Piedad. La organización local de este taller corrió a cargo de Néstor Corona.
+
+## Septiembre 12, 2023
+- Finalizamos la presentación del archivo intro_R_spatial.R
+- Iniciamos con la construcción de un mapa interactivo mostrando la distribución espacial de salas de cine en la CDMX
+
+
