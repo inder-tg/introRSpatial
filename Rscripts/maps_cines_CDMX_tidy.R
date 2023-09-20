@@ -44,14 +44,6 @@ cineByMunicipio <- count(CINES_tidy_CDMX, Municipio)
 
 # ---
 
-# cinesNUM <- numeric(16)
-# 
-# for(i in 1:16){
-#   cinesNUM[i] <- sum( CDMX$Municipio == NAMES_CDMX[i] )
-# }
-# 
-# names(cinesNUM) <- NAMES_CDMX
-# 
 # 
 numCINES <- numeric( length( SHP_alcaldia@data$alcaldi ) )
 
@@ -80,6 +72,8 @@ temp <- cineByMunicipio[cineByMunicipio$Municipio==namesCINES[1],2]
 numCINES[ SHP_alcaldia$alcaldi == namesSHP[1] ] <- as.numeric(unlist(temp))
 
 namesSHP_aux <- namesSHP[-c(8,12)]
+
+# --- for loop - casos particulares y definición antes de ver code below
 
 for(i in 1:length(namesSHP_aux)){
   
