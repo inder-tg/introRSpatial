@@ -35,6 +35,8 @@ gapfill, geoTS, etc.
 
 ## Septiembre 12, 2023
 - Finalizamos la presentación del archivo intro_R_spatial.R
-- Iniciamos con la construcción de un mapa interactivo mostrando la distribución espacial de salas de cine en la CDMX
 
+## Septiembre 20, 2023
+- Exploramos un dataset distribuido en formato .csv usando algunas funciones del tidyverse
+- Construimos un mapa interactivo mostrando la distribución espacial de salas de cine en la CDMX
 
