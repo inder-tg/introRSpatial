@@ -22,12 +22,18 @@ gapfill, geoTS, etc.
 (f) Introducción al tidyverse: ggplot2, dplyr, purrr, tibble, etc.
 
 4. Aplicaciones (a definir de acuerdo a intereses de la audiencia)
+(a) Evaluación de calidad de datos & Interpolación
+(b) Clasificación de tendencias con cambio abrupto
+(c) Estimación de parámetros fenológicos y sus aplicaciones
 
 5. Miscelánea
 (a) Temas varios de visualización
 (b) Debugging: ideas para hallar la fuente de tus errores
 (c) Manejo de memoria
 (d) Cómputo en paralelo
+
+<details>
+<summary>El Colegio de Michoacán, 2023</summary>
 
 ## Septiembre 6, 2023
 - Creación de este repositorio
@@ -39,4 +45,17 @@ gapfill, geoTS, etc.
 ## Septiembre 20, 2023
 - Exploramos un dataset distribuido en formato .csv usando algunas funciones del tidyverse
 - Construimos un mapa interactivo mostrando la distribución espacial de salas de cine en la CDMX
+</details>
 
+<details>
+<summary>Instituto de Geografía, UNAM, 2026</summary>
+
+## Mayo 25, 2026
+- Introducción al Análisis y Generación de Series de Tiempo de Imágenes Satelitales.
+- Taller impartido para estudiantes del Prof. Stephane Couturier.
+- Nos enfocaremos en el punto 4. (a).
+
+## Mayo 29, 2026
+- Nos enfocaremos en los puntos 4. (b) y (c).
+
+</details>
