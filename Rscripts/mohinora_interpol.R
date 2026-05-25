@@ -31,7 +31,7 @@ archivos_NDVI <- list.files( path = directorios[8],
                              pattern = ".tif",
                              full.names = TRUE )
 
-archivos_QA <- list.files( path = directorios[9],
+archivos_QA <- list.files( path = directorios[11],
                            pattern = ".tif",
                            full.names = TRUE )
 
@@ -137,7 +137,7 @@ getReliableNDVI(rasterNDVI = NDVI_mohinora,
 # Comprobando que el resultado es correcto
 directorios <- list.dirs( path = here("data") )
 
-archivo_NDVI_QA <- list.files( path = directorios[9],
+archivo_NDVI_QA <- list.files( path = directorios[10],
                              pattern = ".tif",
                              full.names = TRUE )
 
@@ -164,7 +164,7 @@ for ( i in 1:nlyr(NDVI_mohinora) ) {
 
 directorios <- list.dirs( path = here("data") )
 
-archivos_NDVI_QA <- list.files( path = directorios[9],
+archivos_NDVI_QA <- list.files( path = directorios[10],
                                 pattern = ".tif",
                                 full.names = TRUE )
 
@@ -309,17 +309,22 @@ plot(subset(NDVI_QA, 150), main = "Capa 150 NDVI_QA (sin interpolar)")
 plot(subset(NDVI_interpol, 150))
 
 
-system.time({
-  NDVI_QA_interpol <- app(NDVI_QA, na_interpolation)
-})
+# system.time({
+#   NDVI_QA_interpol <- app(NDVI_QA, na_interpolation)
+# })
 
 system.time({
-  percent_NDVI_QA_interpol <- app(NDVI_QA_interpol, percent_na_at_pixel)
+  percent_NDVI_QA_interpol <- app(NDVI_interpol, percent_na_at_pixel)
 })
 
 plot(percent_NDVI_QA_interpol)
 
-plot(subset(NDVI_QA_interpol, 150))
+mp_percent_missing_vals_interpol <- percent_NDVI_QA_interpol * 100
+mp_percent_missing_vals_interpol[ mp_percent_missing_vals_interpol == 100 ] <- NA 
+mp_interpol <- mapview( mp_percent_missing_vals_interpol, 
+                        na.col = "transparent")
+
+mp + mp_interpol
 
 # --- igapfill
 
