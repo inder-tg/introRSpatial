@@ -148,18 +148,32 @@ output <- foreach(i=1:nrow(mohinora_interpol_rTp$coords), .combine="rbind",
                                    end = c(2023, 23),
                                    frequency = 23)
                     
-                    pixel_bfast01 <- bfast01( data=pixel_ts )
+                    if( sum( is.na(pixel) ) != 529 ){
+                      pixel <- mohinora_interpol_rTp$values[i,]
+                      
+                      pixel_ts <- ts(pixel * 1e-4, 
+                                     start = c(2001,1), 
+                                     end = c(2023, 23),
+                                     frequency = 23)
+                      pixel_bfast01 <- bfast01( data=pixel_ts )
+                      
+                      # TYPE, SIGN, STABLE, YEARS, CP
+                      
+                      TEMP <- bfast01classify(pixel_bfast01)
+                      
+                      YEAR <- getYear(start=2001, end=2023, 
+                                      bp=pixel_bfast01$breakpoints, freq=23)
+                      
+                      s <- c(TEMP$flag_type, 
+                             TEMP$flag_significance, 
+                             TEMP$flag_pct_stable, 
+                             YEAR, 
+                             pixel_bfast01$breakpoints)
+                      
+                    } else {
+                      s <- rep(NA, 5)
+                    }
                     
-                    # TYPE, SIGN, STABLE, YEARS, CP
-                    
-                    TEMP <- bfast01classify(pixel_bfast01)
-                    
-                    YEAR <- getYear(start=2001, end=2023, 
-                                    bp=pixel_bfast01$breakpoints, freq=23)
-                    
-                    s <- c(TEMP$flag_type, TEMP$flag_significance, 
-                           TEMP$flag_pct_stable, YEAR, 
-                           pixel_bfast01$breakpoints)
                     
                     return(s)
                   }
