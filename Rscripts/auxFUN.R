@@ -3,7 +3,7 @@ spRast_valueCoords <- function(spRaster, na_rm=FALSE){
   
   spPoints <- as.points(spRaster, na.rm=na_rm)
   
-  spValues <- extract(spRaster, spPoints)
+  spValues <- terra::extract(spRaster, spPoints)
   
   DIM <- dim(spValues)
   
