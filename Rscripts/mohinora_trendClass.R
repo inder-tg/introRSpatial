@@ -22,7 +22,7 @@ library(tidyverse)
 library(kableExtra)
 library(here)
 
-source( "/Rscripts/auxFUN.R" )
+source( "Rscripts/auxFUN.R" )
 
 # Carga de datos
 
@@ -42,40 +42,44 @@ archivos_SHP <- list.files( path = directorios[2],
 
 mohinora_interpol <- rast(archivos_NDVI)
 
-mohinora_interpol <- mohinora_interpol[  ]
+mohinora_interpol <- subset( mohinora_interpol, 21:549 )
 
-mohinora_interpol_rTp <- spatRast_valueCoords(mohinora_interpol)
+mohinora_interpol_rTp <- spRast_valueCoords(mohinora_interpol)
 
 SHP <- st_read(archivos_SHP)
 
 # Proyectando SHP a crs de NDVI_interpol
 
 mohinora_polygon <- SHP %>% filter( NOMBRE == "Cerro Mohinora" )
-mohinora_sinu <- st_transform( mohinora_polygon, crs = crs(NDVI_interpol) )
+mohinora_sinu <- st_transform( mohinora_polygon, crs = crs(mohinora_interpol) )
+
+archivos_SHP <- list.files( path = directorios[12],
+                            pattern = ".shp",
+                            full.names = TRUE )
 
 mohinora_usv <- st_read( archivos_SHP ) # REVISAR directorios/archivos
 
-mohinora_SHP_USV_st <- st_transform(x=mohinora_SHP_USV_st, 
-                                    crs=crs(mohinora_SHP_st))
+# mohinora_SHP_USV_st <- st_transform(x=mohinora_SHP_USV_st, 
+#                                     crs=crs(mohinora_SHP_st))
 
 # -----------------------------------------------
 # --- Clasificación de tendencias --- #
 # -----------------------------------------------
 
 plot(subset(mohinora_interpol,453))
-lines( mohinora_SHP_st, lwd=4 )
+lines( mohinora_usv, lwd=4 )
 
 XY <- locator() 
 
 xy <- get_timeSeries_byClicking(c(XY$x, XY$y), 
                                 df=mohinora_interpol_rTp$coords)
 
-# 2564, 2298, buenos pixeles para cps
-pixel <- mohinora_interpol_rTp$values[2564, ]
+# 3798, 2564, 2298, buenos pixeles para cps
+pixel <- mohinora_interpol_rTp$values[409, ]
 
 # --- objeto ts
 pixel_ts <- ts(pixel * 1e-4, 
-               start = c(2000,1), 
+               start = c(2001,1), 
                end = c(2023,23),
                frequency = 23)
 # ---
@@ -88,7 +92,7 @@ pixel_bfast01$breakpoints
 
 bfast01classify(pixel_bfast01)
 
-getYear(start=2000, end=2023, bp=pixel_bfast01$breakpoints, freq=23)
+getYear(start=2001, end=2023, bp=pixel_bfast01$breakpoints, freq=23)
 
 # ---
 
@@ -99,20 +103,20 @@ getYear(start=2000, end=2023, bp=pixel_bfast01$breakpoints, freq=23)
 # --- en df_pvalue vamos a guardar los p-values de la prueba MK
 # --- en df_slope vamos a guardar los estimadore de pendiente prueba TS
 
-TYPE <- matrix(nrow=nrow(mohinora_DATA_interpol_rTp$coords), ncol=3)
-TYPE[,1:2] <- mohinora_DATA_interpol_rTp$coords[,1:2]
+TYPE <- matrix(nrow=nrow(mohinora_interpol_rTp$coords), ncol=3)
+TYPE[,1:2] <- mohinora_interpol_rTp$coords[,1:2]
 
-SIGN <- matrix(nrow=nrow(mohinora_DATA_interpol_rTp$coords), ncol=3)
-SIGN[,1:2] <- mohinora_DATA_interpol_rTp$coords[,1:2]
+SIGN <- matrix(nrow=nrow(mohinora_interpol_rTp$coords), ncol=3)
+SIGN[,1:2] <- mohinora_interpol_rTp$coords[,1:2]
 
-STABLE <- matrix(nrow=nrow(mohinora_DATA_interpol_rTp$coords), ncol=3)
-STABLE[,1:2] <- mohinora_DATA_interpol_rTp$coords[,1:2]
+STABLE <- matrix(nrow=nrow(mohinora_interpol_rTp$coords), ncol=3)
+STABLE[,1:2] <- mohinora_interpol_rTp$coords[,1:2]
 
-YEARS <- matrix(nrow=nrow(mohinora_DATA_interpol_rTp$coords), ncol=3)
-YEARS[,1:2] <- mohinora_DATA_interpol_rTp$coords[,1:2]
+YEARS <- matrix(nrow=nrow(mohinora_interpol_rTp$coords), ncol=3)
+YEARS[,1:2] <- mohinora_interpol_rTp$coords[,1:2]
 
-CP <- matrix(nrow=nrow(mohinora_DATA_interpol_rTp$coords), ncol=3)
-CP[,1:2] <- mohinora_DATA_interpol_rTp$coords[,1:2]
+CP <- matrix(nrow=nrow(mohinora_interpol_rTp$coords), ncol=3)
+CP[,1:2] <- mohinora_interpol_rTp$coords[,1:2]
 
 # ---  
 
@@ -129,7 +133,7 @@ write(as.character(Sys.time()[1]), file=progressReportFile,
 kluster <- parallel::makeCluster(numCores-1, outfile="")
 registerDoParallel(kluster)
 
-output <- foreach(i=1:nrow(mohinora_DATA_interpol_rTp$coords), .combine="rbind",
+output <- foreach(i=1:nrow(mohinora_interpol_rTp$coords), .combine="rbind",
                   .packages=c("bfast") ) %dopar% { # nrow(sp_ndvi_rTp)
                     
                     if(i %% 100 ==0){
@@ -137,10 +141,10 @@ output <- foreach(i=1:nrow(mohinora_DATA_interpol_rTp$coords), .combine="rbind",
                       write(texto, file=progressReportFile, append=TRUE)
                     }
                     
-                    pixel <- mohinora_DATA_interpol_rTp$values[i,]
+                    pixel <- mohinora_interpol_rTp$values[i,]
                     
                     pixel_ts <- ts(pixel * 1e-4, 
-                                   start = c(2000,1), 
+                                   start = c(2001,1), 
                                    end = c(2023, 23),
                                    frequency = 23)
                     
@@ -150,7 +154,7 @@ output <- foreach(i=1:nrow(mohinora_DATA_interpol_rTp$coords), .combine="rbind",
                     
                     TEMP <- bfast01classify(pixel_bfast01)
                     
-                    YEAR <- getYear(start=2000, end=2023, 
+                    YEAR <- getYear(start=2001, end=2023, 
                                     bp=pixel_bfast01$breakpoints, freq=23)
                     
                     s <- c(TEMP$flag_type, TEMP$flag_significance, 
